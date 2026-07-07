@@ -322,12 +322,6 @@ Here is a visual mockup preview of the live Gradio Operations Hub showing active
 
 ---
 
-## 🎥 Demo Video
-
-A video demo showcasing the system, wayfinding recalculation during simulated emergencies, and the GenAI dispatch briefings can be viewed on [YouTube (Placeholder)]().
-
----
-
 ## 🔮 Future Enhancements
 
 * 📷 **Computer Vision Crowd Sensing**: Parse live security camera feeds using YOLO to automatically generate crowd coordinates instead of mock sensor outputs.
