@@ -1,0 +1,8 @@
+google-generativeai
+gradio>=6.0b1
+networkx
+scikit-learn
+pandas
+numpy
+python-dotenv
+pytest

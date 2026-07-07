@@ -1,0 +1,256 @@
+{
+    "nodes": [
+        {
+            "id": "Gate_A",
+            "type": "gate",
+            "x": 10,
+            "y": 50,
+            "label": "Gate A (Main West Entry)"
+        },
+        {
+            "id": "Gate_B",
+            "type": "gate",
+            "x": 90,
+            "y": 50,
+            "label": "Gate B (East Entry)"
+        },
+        {
+            "id": "Gate_C",
+            "type": "gate",
+            "x": 50,
+            "y": 10,
+            "label": "Gate C (North Entry)"
+        },
+        {
+            "id": "Gate_D",
+            "type": "gate",
+            "x": 50,
+            "y": 90,
+            "label": "Gate D (South Entry)"
+        },
+        {
+            "id": "Sec_101",
+            "type": "seating",
+            "x": 30,
+            "y": 30,
+            "label": "Section 101 (Lower West)"
+        },
+        {
+            "id": "Sec_102",
+            "type": "seating",
+            "x": 30,
+            "y": 70,
+            "label": "Section 102 (Upper West)"
+        },
+        {
+            "id": "Sec_103",
+            "type": "seating",
+            "x": 70,
+            "y": 30,
+            "label": "Section 103 (Lower East)"
+        },
+        {
+            "id": "Sec_104",
+            "type": "seating",
+            "x": 70,
+            "y": 70,
+            "label": "Section 104 (Upper East)"
+        },
+        {
+            "id": "Restroom_N",
+            "type": "restroom",
+            "x": 50,
+            "y": 20,
+            "label": "Restroom North"
+        },
+        {
+            "id": "Restroom_S",
+            "type": "restroom",
+            "x": 50,
+            "y": 80,
+            "label": "Restroom South"
+        },
+        {
+            "id": "Food_Stall_West",
+            "type": "food",
+            "x": 20,
+            "y": 50,
+            "label": "FIFA Fan Fest Food West"
+        },
+        {
+            "id": "Food_Stall_East",
+            "type": "food",
+            "x": 80,
+            "y": 50,
+            "label": "Concession Corner East"
+        },
+        {
+            "id": "Medical_West",
+            "type": "medical",
+            "x": 15,
+            "y": 45,
+            "label": "First Aid Center West"
+        },
+        {
+            "id": "Medical_East",
+            "type": "medical",
+            "x": 85,
+            "y": 45,
+            "label": "First Aid Center East"
+        },
+        {
+            "id": "Exit_A",
+            "type": "exit",
+            "x": 5,
+            "y": 50,
+            "label": "Main Exit West"
+        },
+        {
+            "id": "Exit_B",
+            "type": "exit",
+            "x": 95,
+            "y": 50,
+            "label": "Main Exit East"
+        }
+    ],
+    "edges": [
+        {
+            "source": "Exit_A",
+            "target": "Gate_A",
+            "distance": 5.0,
+            "base_time_seconds": 10
+        },
+        {
+            "source": "Exit_B",
+            "target": "Gate_B",
+            "distance": 5.0,
+            "base_time_seconds": 10
+        },
+        {
+            "source": "Gate_A",
+            "target": "Food_Stall_West",
+            "distance": 10.0,
+            "base_time_seconds": 20
+        },
+        {
+            "source": "Gate_A",
+            "target": "Medical_West",
+            "distance": 7.1,
+            "base_time_seconds": 14
+        },
+        {
+            "source": "Medical_West",
+            "target": "Food_Stall_West",
+            "distance": 7.1,
+            "base_time_seconds": 14
+        },
+        {
+            "source": "Food_Stall_West",
+            "target": "Sec_101",
+            "distance": 22.4,
+            "base_time_seconds": 44
+        },
+        {
+            "source": "Food_Stall_West",
+            "target": "Sec_102",
+            "distance": 22.4,
+            "base_time_seconds": 44
+        },
+        {
+            "source": "Sec_101",
+            "target": "Gate_C",
+            "distance": 28.3,
+            "base_time_seconds": 56
+        },
+        {
+            "source": "Sec_101",
+            "target": "Restroom_N",
+            "distance": 22.4,
+            "base_time_seconds": 44
+        },
+        {
+            "source": "Sec_102",
+            "target": "Gate_D",
+            "distance": 28.3,
+            "base_time_seconds": 56
+        },
+        {
+            "source": "Sec_102",
+            "target": "Restroom_S",
+            "distance": 22.4,
+            "base_time_seconds": 44
+        },
+        {
+            "source": "Gate_C",
+            "target": "Restroom_N",
+            "distance": 10.0,
+            "base_time_seconds": 20
+        },
+        {
+            "source": "Gate_D",
+            "target": "Restroom_S",
+            "distance": 10.0,
+            "base_time_seconds": 20
+        },
+        {
+            "source": "Restroom_N",
+            "target": "Sec_103",
+            "distance": 22.4,
+            "base_time_seconds": 44
+        },
+        {
+            "source": "Restroom_S",
+            "target": "Sec_104",
+            "distance": 22.4,
+            "base_time_seconds": 44
+        },
+        {
+            "source": "Sec_103",
+            "target": "Food_Stall_East",
+            "distance": 22.4,
+            "base_time_seconds": 44
+        },
+        {
+            "source": "Sec_104",
+            "target": "Food_Stall_East",
+            "distance": 22.4,
+            "base_time_seconds": 44
+        },
+        {
+            "source": "Food_Stall_East",
+            "target": "Gate_B",
+            "distance": 10.0,
+            "base_time_seconds": 20
+        },
+        {
+            "source": "Gate_B",
+            "target": "Medical_East",
+            "distance": 7.1,
+            "base_time_seconds": 14
+        },
+        {
+            "source": "Medical_East",
+            "target": "Exit_B",
+            "distance": 11.2,
+            "base_time_seconds": 22
+        },
+        {
+            "source": "Gate_C",
+            "target": "Gate_D",
+            "distance": 80.0,
+            "base_time_seconds": 160
+        },
+        {
+            "source": "Sec_101",
+            "target": "Sec_102",
+            "distance": 40.0,
+            "base_time_seconds": 80
+        },
+        {
+            "source": "Sec_103",
+            "target": "Sec_104",
+            "distance": 40.0,
+            "base_time_seconds": 80
+        }
+    ]
+}
