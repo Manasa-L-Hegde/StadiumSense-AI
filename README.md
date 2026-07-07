@@ -25,8 +25,6 @@ license: mit
 
 ## 🌐 Live Deployment & Walkthrough
 * **Gradio App Live Link**: [**▶ Launch Live Dashboard on Hugging Face**](https://huggingface.co/spaces/manasahegde/StadiumSense-AI)
-* **Demo Video Walkthrough**: [▶ Watch 2-minute Walkthrough (YouTube)]()
-
 ---
 
 ## 📖 Project Overview
