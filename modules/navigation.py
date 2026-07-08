@@ -1,6 +1,5 @@
 import os
 import json
-from functools import lru_cache
 import networkx as nx
 import google.generativeai as genai
 from modules.security_utils import sanitize_text, validate_node_id
@@ -136,28 +135,16 @@ class NavigationEngine:
         if "error" in path_result:
             return path_result["error"]
             
-        path = path_result.get("path", [])
-        dist = path_result.get("distance_meters", 0.0)
-        time = path_result.get("time_seconds", 0)
-        congested_crossed = path_result.get("congested_nodes_crossed", [])
+        path = path_result["path"]
+        dist = path_result["distance_meters"]
+        time = path_result["time_seconds"]
+        congested_crossed = path_result["congested_nodes_crossed"]
+        
+        labels_map = self.get_node_labels_map()
+        path_labels = [labels_map.get(node_id, node_id) for node_id in path]
         
         # Clean user query for safety
         clean_query = sanitize_text(user_query, max_length=200) if user_query else "Guide me to my destination."
-        
-        # Immediate block of prompt injection in wayfinding
-        if "[injection attempt blocked]" in clean_query:
-            return "⚠️ Security Warning: System override instructions detected and blocked. Please ask a standard stadium wayfinding question."
-            
-        # Convert lists to tuples to make them hashable for caching
-        path_tuple = tuple(path)
-        congested_crossed_tuple = tuple((nid, sev) for nid, sev in congested_crossed)
-        
-        return self._explain_route_cached(path_tuple, dist, time, congested_crossed_tuple, clean_query)
-        
-    @lru_cache(maxsize=128)
-    def _explain_route_cached(self, path_tuple: tuple, dist: float, time: int, congested_crossed_tuple: tuple, clean_query: str) -> str:
-        labels_map = self.get_node_labels_map()
-        path_labels = [labels_map.get(node_id, node_id) for node_id in path_tuple]
         
         # Format a summary of the path
         nodes_description = " -> ".join(path_labels)
@@ -166,15 +153,15 @@ class NavigationEngine:
         time_str = f"{mins} min {secs} sec" if mins > 0 else f"{secs} seconds"
         
         congested_str = ""
-        if congested_crossed_tuple:
-            congested_str = "Passed through congested zones: " + ", ".join([f"{labels_map.get(nid, nid)} ({sev})" for nid, sev in congested_crossed_tuple])
+        if congested_crossed:
+            congested_str = "Passed through congested zones: " + ", ".join([f"{labels_map.get(nid, nid)} ({sev})" for nid, sev in congested_crossed])
         else:
             congested_str = "Clear path, no heavy crowd hotspots crossed."
             
         # Rule-based fallback summary (failsafe) using the structured operations format
         fallback_desc = (
             f"**Situation**\n"
-            f"Fan routing request from {labels_map.get(path_tuple[0], path_tuple[0])} to {labels_map.get(path_tuple[-1], path_tuple[-1])}.\n"
+            f"Fan routing request from {labels_map.get(path[0], path[0])} to {labels_map.get(path[-1], path[-1])}.\n"
             f"↓\n"
             f"**Recommended Action**\n"
             f"Follow route: {nodes_description}\n"

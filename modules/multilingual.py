@@ -1,5 +1,4 @@
 import os
-from functools import lru_cache
 import google.generativeai as genai
 from modules.security_utils import sanitize_text
 
@@ -73,7 +72,6 @@ class MultilingualAssistant:
             else:
                 return "👋 Hello! I am StadiumSense AI, your smart operations assistant. How can I help you navigate the stadium or event operations today?"
 
-    @lru_cache(maxsize=128)
     def chat(self, user_query: str) -> str:
         """
         Processes user query using Gemini API with language detection.
