@@ -83,3 +83,35 @@ def test_decision_support_gemini_format(mock_gen_model_class, mock_graph_file):
         brief = dss.format_alerts_genai(alerts_data)
         assert "STADIUM DISPATCH" in brief
         mock_model_instance.generate_content.assert_called_once()
+
+@patch("google.generativeai.GenerativeModel")
+def test_decision_support_caching(mock_gen_model_class, mock_graph_file):
+    mock_model_instance = MagicMock()
+    mock_response = MagicMock()
+    mock_response.text = "STADIUM DISPATCH: Redirect fans from Gate A to Gate B immediately due to a bottleneck."
+    mock_model_instance.generate_content.return_value = mock_response
+    mock_gen_model_class.return_value = mock_model_instance
+    
+    dss = DecisionSupportSystem(graph_path=mock_graph_file)
+    dss._format_alerts_genai_cached.cache_clear()
+    
+    alerts_data = {
+        "raw_alerts": [
+            {
+                "level": "CRITICAL",
+                "zone_id": "Gate_A",
+                "zone_label": "Gate A",
+                "message": "Gate A is congested. Redirect to Gate B.",
+                "suggested_action": "Deploy crowd controllers.",
+                "density": 85.0,
+                "count": 25
+            }
+        ]
+    }
+    
+    with patch.dict(os.environ, {"GEMINI_API_KEY": "fake_key_here"}):
+        brief1 = dss.format_alerts_genai(alerts_data)
+        brief2 = dss.format_alerts_genai(alerts_data)
+        
+        assert brief1 == brief2
+        assert mock_model_instance.generate_content.call_count == 1

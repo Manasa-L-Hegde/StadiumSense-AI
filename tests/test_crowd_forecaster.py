@@ -66,3 +66,28 @@ def test_forecaster_missing_file_fallback():
     
     # Heuristic for gate: change is +8.0 before kickoff, so 40.0 + 8.0 = 48.0
     assert pred == 48.0
+
+def test_forecaster_caching(temp_historical_data):
+    forecaster = CrowdForecaster(historical_data_path=temp_historical_data)
+    forecaster.forecast_density.cache_clear()
+    
+    pred1 = forecaster.forecast_density(
+        zone_id="Gate_A",
+        zone_type="gate",
+        current_density=45.0,
+        minutes_from_kickoff=-20.0,
+        is_halftime=False
+    )
+    
+    pred2 = forecaster.forecast_density(
+        zone_id="Gate_A",
+        zone_type="gate",
+        current_density=45.0,
+        minutes_from_kickoff=-20.0,
+        is_halftime=False
+    )
+    
+    assert pred1 == pred2
+    cache_info = forecaster.forecast_density.cache_info()
+    assert cache_info.hits == 1
+    assert cache_info.misses == 1

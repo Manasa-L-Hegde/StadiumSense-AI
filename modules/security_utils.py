@@ -13,15 +13,28 @@ def sanitize_text(text: str, max_length: int = 300) -> str:
     # Enforce maximum length
     text = text[:max_length].strip()
     
-    # Simple regex to check for prompt-injection markers or override attempts
+    # More comprehensive regex to check for prompt-injection markers or override attempts
     injection_patterns = [
-        r"(ignore\s+(all\s+|the\s+|any\s+)?(previous|above|system)\s+instructions)",
+        r"(ignore\s+(all\s+|the\s+|any\s+|previous\s+|above\s+|system\s+)*instructions)",
+        r"(ignore\s+all\s+rules)",
+        r"(ignore\s+rules)",
         r"(system\s+prompt)",
         r"(you\s+are\s+now\s+a\s+)",
         r"(acting\s+as\s+a\s+)",
         r"(new\s+role)",
-        r"(disregard\s+all\s+)",
-        r"(override\s+instructions)"
+        r"(disregard\s+(all\s+|the\s+|any\s+|previous\s+|above\s+|system\s+)*instructions)",
+        r"(disregard\s+rules)",
+        r"(forget\s+(all\s+|the\s+|any\s+|previous\s+|above\s+|system\s+)*instructions)",
+        r"(forget\s+(what\s+)?I\s+said\s+before)",
+        r"(forget\s+everything\s+before)",
+        r"(ignore\s+everything\s+before)",
+        r"(override\s+instructions)",
+        r"(do\s+not\s+follow\s+(any\s+)?instructions)",
+        r"(new\s+instructions:)",
+        r"(you\s+must\s+now\s+)",
+        r"(assistant\s+must\s+now\s+)",
+        r"(jailbreak)",
+        r"(system\s+override)"
     ]
     
     # Replace injection attempts with neutral text or flag them

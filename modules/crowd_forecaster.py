@@ -1,4 +1,5 @@
 import os
+from functools import lru_cache
 import pandas as pd
 import numpy as np
 from sklearn.ensemble import RandomForestRegressor
@@ -49,6 +50,7 @@ class CrowdForecaster:
             # Silently fallback to heuristic if training fails
             self.is_trained = False
             
+    @lru_cache(maxsize=512)
     def forecast_density(self, zone_id: str, zone_type: str, current_density: float, minutes_from_kickoff: float = 0.0, is_halftime: bool = False) -> float:
         """
         Predicts the density of a zone in 15 minutes using the trained RandomForest.

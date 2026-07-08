@@ -50,3 +50,21 @@ def test_multilingual_gemini_mock(mock_gen_model_class):
         reply = assistant.chat("Hello, can you help me?")
         assert "Hello!" in reply
         mock_model_instance.generate_content.assert_called_once()
+
+@patch("google.generativeai.GenerativeModel")
+def test_multilingual_caching(mock_gen_model_class):
+    mock_model_instance = MagicMock()
+    mock_response = MagicMock()
+    mock_response.text = "Hello! I am StadiumSense AI, how can I help you today?"
+    mock_model_instance.generate_content.return_value = mock_response
+    mock_gen_model_class.return_value = mock_model_instance
+    
+    assistant = MultilingualAssistant()
+    assistant.chat.cache_clear()
+    
+    with patch.dict(os.environ, {"GEMINI_API_KEY": "fake_key_here"}):
+        reply1 = assistant.chat("Hello, can you help me?")
+        reply2 = assistant.chat("Hello, can you help me?")
+        
+        assert reply1 == reply2
+        assert mock_model_instance.generate_content.call_count == 1

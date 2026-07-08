@@ -1,5 +1,6 @@
 import os
 import json
+from functools import lru_cache
 import numpy as np
 import google.generativeai as genai
 
@@ -125,6 +126,13 @@ class DecisionSupportSystem:
         Uses Gemini API to convert raw rule-based alerts into a polished, plain-English radio/dispatch brief.
         Falls back to rule-based formatting if Gemini is unavailable.
         """
+        # Serialize to a sorted JSON string to make it hashable for lru_cache
+        alerts_json = json.dumps(alerts_data, sort_keys=True)
+        return self._format_alerts_genai_cached(alerts_json)
+        
+    @lru_cache(maxsize=32)
+    def _format_alerts_genai_cached(self, alerts_json: str) -> str:
+        alerts_data = json.loads(alerts_json)
         raw_alerts = alerts_data.get("raw_alerts", [])
         if not raw_alerts:
             return "✅ Stadium operations normal. No active alerts."
